@@ -1,12 +1,11 @@
 import { useRouter } from 'next/navigation';
 import React from 'react';
 import { useApp } from '@/context/seller/AppContext';
-import { 
-  ShieldCheck, 
-  Zap, 
-  Clock, 
-  IndianRupee, 
-  Package, 
+import {
+  ShieldCheck,
+  Clock,
+  IndianRupee,
+  Package,
   AlertCircle,
   Lock,
   Server,
@@ -24,8 +23,8 @@ import {
 } from 'lucide-react';
 
 const Dashboard: React.FC = () => {
-  const { orders, products, notifications, financials, simulateOrder, seller, performance, returns } = useApp();
-  const navigate = useRouter();
+  const { orders, products, notifications, financials, seller, performance, returns } = useApp();
+  const router = useRouter();
 
   const pendingOrders = orders.filter(o => o.status === 'Pending').length;
   const lowStockProducts = products.filter(p => p.availableStock < 10).length;
@@ -54,26 +53,20 @@ const Dashboard: React.FC = () => {
           </p>
         </div>
         <div className="flex items-center gap-2 sm:gap-3">
-          <button 
-            onClick={simulateOrder}
-            className="flex-1 sm:flex-none flex items-center justify-center gap-2 bg-[#002366] text-white px-4 sm:px-6 py-2.5 sm:py-3 rounded-xl font-bold text-[10px] sm:text-xs hover:bg-blue-900 transition-all shadow-lg shadow-blue-900/20 active:scale-95"
-          >
-            <Zap size={14} /> SIMULATE ORDER
-          </button>
+          {/* Action buttons can go here */}
         </div>
       </div>
 
       {seller?.status && seller.status !== 'Live' && (
-        <div className={`p-4 rounded-2xl border flex items-start gap-3 ${
-          seller.status === 'Applied' ? 'bg-yellow-50 border-yellow-100' :
-          seller.status === 'UnderReview' ? 'bg-blue-50 border-blue-100' :
-          seller.status === 'Suspended' ? 'bg-red-50 border-red-100' :
-          'bg-gray-50 border-gray-100'
-        }`}>
+        <div className={`p-4 rounded-2xl border flex items-start gap-3 ${seller.status === 'Applied' ? 'bg-yellow-50 border-yellow-100' :
+            seller.status === 'UnderReview' ? 'bg-blue-50 border-blue-100' :
+              seller.status === 'Suspended' ? 'bg-red-50 border-red-100' :
+                'bg-gray-50 border-gray-100'
+          }`}>
           <AlertTriangle size={18} className={
             seller.status === 'Applied' ? 'text-yellow-500' :
-            seller.status === 'UnderReview' ? 'text-blue-500' :
-            seller.status === 'Suspended' ? 'text-red-500' : 'text-gray-500'
+              seller.status === 'UnderReview' ? 'text-blue-500' :
+                seller.status === 'Suspended' ? 'text-red-500' : 'text-gray-500'
           } />
           <div>
             <p className="text-sm font-bold text-slate-800">Account Status: {seller.status}</p>
@@ -83,7 +76,7 @@ const Dashboard: React.FC = () => {
               {seller.status === 'Suspended' && 'Your account is suspended. Contact support for assistance.'}
             </p>
             {seller.status === 'Applied' && (
-              <button 
+              <button
                 onClick={() => router.push('/compliance')}
                 className="mt-3 text-[10px] font-bold text-[#002366] uppercase tracking-wider hover:underline"
               >
@@ -102,34 +95,34 @@ const Dashboard: React.FC = () => {
       </div>
 
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
-        <StatCard 
-          title="Pending Orders" 
-          value={pendingOrders} 
-          icon={<Clock className="text-orange-500" />} 
-          trend={pendingOrders > 0 ? "Requires Action" : "All Clear"} 
+        <StatCard
+          title="Pending Orders"
+          value={pendingOrders}
+          icon={<Clock className="text-orange-500" />}
+          trend={pendingOrders > 0 ? "Requires Action" : "All Clear"}
           color="border-orange-100"
           onClick={() => router.push('/orders')}
         />
-        <StatCard 
-          title="Net Earnings" 
-          value={`₹${financials.netEarnings.toLocaleString('en-IN')}`} 
-          icon={<IndianRupee className="text-green-500" />} 
+        <StatCard
+          title="Net Earnings"
+          value={`₹${financials.netEarnings.toLocaleString('en-IN')}`}
+          icon={<IndianRupee className="text-green-500" />}
           trend={`Next Payout: ${financials.payoutFrequency}`}
           color="border-green-100"
           onClick={() => router.push('/financials')}
         />
-        <StatCard 
-          title="Low Stock Alert" 
-          value={lowStockProducts} 
-          icon={<AlertCircle className="text-red-500" />} 
-          trend="Needs Restocking" 
+        <StatCard
+          title="Low Stock Alert"
+          value={lowStockProducts}
+          icon={<AlertCircle className="text-red-500" />}
+          trend="Needs Restocking"
           color="border-red-100"
           onClick={() => router.push('/products')}
         />
-        <StatCard 
-          title="Active Products" 
-          value={products.filter(p => p.status === 'Live').length} 
-          icon={<Package className="text-blue-500" />} 
+        <StatCard
+          title="Active Products"
+          value={products.filter(p => p.status === 'Live').length}
+          icon={<Package className="text-blue-500" />}
           trend={`${products.length} Total SKUs`}
           color="border-blue-100"
           onClick={() => router.push('/products')}
@@ -138,26 +131,26 @@ const Dashboard: React.FC = () => {
 
       {/* Performance Overview */}
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4">
-        <PerformanceCard 
-          label="Order Acceptance" 
+        <PerformanceCard
+          label="Order Acceptance"
           value={`${performance.ordersReceived > 0 ? Math.round((performance.ordersAccepted / performance.ordersReceived) * 100) : 100}%`}
           status={performance.cancellationRate < 5 ? 'good' : performance.cancellationRate < 10 ? 'warning' : 'bad'}
         />
-        <PerformanceCard 
-          label="On-Time Dispatch" 
+        <PerformanceCard
+          label="On-Time Dispatch"
           value={`${100 - performance.lateDispatchRate}%`}
           status={performance.lateDispatchRate < 5 ? 'good' : performance.lateDispatchRate < 15 ? 'warning' : 'bad'}
         />
-        <PerformanceCard 
-          label="Return Rate" 
+        <PerformanceCard
+          label="Return Rate"
           value={`${performance.returnRate.toFixed(1)}%`}
           status={performance.returnRate < 3 ? 'good' : performance.returnRate < 8 ? 'warning' : 'bad'}
         />
-        <PerformanceCard 
-          label="Account Health" 
+        <PerformanceCard
+          label="Account Health"
           value={performance.accountHealth}
-          status={performance.accountHealth === 'Excellent' || performance.accountHealth === 'Good' ? 'good' : 
-                  performance.accountHealth === 'Fair' ? 'warning' : 'bad'}
+          status={performance.accountHealth === 'Excellent' || performance.accountHealth === 'Good' ? 'good' :
+            performance.accountHealth === 'Fair' ? 'warning' : 'bad'}
         />
       </div>
 
@@ -196,19 +189,18 @@ const Dashboard: React.FC = () => {
                   </div>
                   <div className="text-right shrink-0 ml-2">
                     <p className="text-xs sm:text-sm font-extrabold text-[#002366]">₹{o.totalAmount.toLocaleString('en-IN')}</p>
-                    <p className={`text-[9px] sm:text-[10px] font-bold uppercase ${
-                      o.status === 'Pending' ? 'text-orange-500' : 
-                      o.status === 'Delivered' ? 'text-green-500' : 
-                      o.status === 'Shipped' ? 'text-blue-500' : 'text-slate-400'
-                    }`}>{o.status}</p>
+                    <p className={`text-[9px] sm:text-[10px] font-bold uppercase ${o.status === 'Pending' ? 'text-orange-500' :
+                        o.status === 'Delivered' ? 'text-green-500' :
+                          o.status === 'Shipped' ? 'text-blue-500' : 'text-slate-400'
+                      }`}>{o.status}</p>
                   </div>
                 </div>
               ))}
               {orders.length === 0 && (
                 <div className="py-8 sm:py-12 text-center">
                   <p className="text-slate-400 text-sm mb-4">No orders yet.</p>
-                  <button onClick={simulateOrder} className="text-[#002366] text-xs font-bold underline">
-                    SIMULATE FIRST ORDER
+                  <button onClick={() => router.push('/products')} className="text-[#002366] text-xs font-bold underline">
+                    ADD YOUR FIRST PRODUCT
                   </button>
                 </div>
               )}
@@ -221,8 +213,8 @@ const Dashboard: React.FC = () => {
             <h3 className="font-jakarta font-bold text-lg mb-4 sm:mb-6">Alerts & Actions</h3>
             <div className="space-y-4 sm:space-y-6">
               {pendingOrders > 0 && (
-                <AlertItem 
-                  icon={<Clock size={14} />} 
+                <AlertItem
+                  icon={<Clock size={14} />}
                   title={`${pendingOrders} Pending Order${pendingOrders > 1 ? 's' : ''}`}
                   message="Accept within SLA deadline"
                   type="warning"
@@ -230,8 +222,8 @@ const Dashboard: React.FC = () => {
                 />
               )}
               {pendingReturns > 0 && (
-                <AlertItem 
-                  icon={<RotateCcw size={14} />} 
+                <AlertItem
+                  icon={<RotateCcw size={14} />}
                   title={`${pendingReturns} Return Request${pendingReturns > 1 ? 's' : ''}`}
                   message="Review and respond"
                   type="warning"
@@ -239,8 +231,8 @@ const Dashboard: React.FC = () => {
                 />
               )}
               {lowStockProducts > 0 && (
-                <AlertItem 
-                  icon={<AlertCircle size={14} />} 
+                <AlertItem
+                  icon={<AlertCircle size={14} />}
                   title={`${lowStockProducts} Low Stock Item${lowStockProducts > 1 ? 's' : ''}`}
                   message="Restock to avoid stockouts"
                   type="error"
@@ -248,8 +240,8 @@ const Dashboard: React.FC = () => {
                 />
               )}
               {slaViolations > 0 && (
-                <AlertItem 
-                  icon={<XCircle size={14} />} 
+                <AlertItem
+                  icon={<XCircle size={14} />}
                   title={`${slaViolations} SLA Violation${slaViolations > 1 ? 's' : ''}`}
                   message="Immediate action required"
                   type="error"
@@ -273,11 +265,10 @@ const Dashboard: React.FC = () => {
             <div className="space-y-4 sm:space-y-6">
               {notifications.slice(0, 4).map((notif) => (
                 <div key={notif.id} className="flex gap-3 sm:gap-4 group">
-                  <div className={`mt-1.5 w-1.5 h-1.5 rounded-full shrink-0 transition-transform group-hover:scale-150 ${
-                    notif.type === 'Urgent' ? 'bg-red-500' : 
-                    notif.type === 'Order' ? 'bg-orange-500' :
-                    notif.type === 'Payment' ? 'bg-green-500' : 'bg-blue-500'
-                  }`} />
+                  <div className={`mt-1.5 w-1.5 h-1.5 rounded-full shrink-0 transition-transform group-hover:scale-150 ${notif.type === 'Urgent' ? 'bg-red-500' :
+                      notif.type === 'Order' ? 'bg-orange-500' :
+                        notif.type === 'Payment' ? 'bg-green-500' : 'bg-blue-500'
+                    }`} />
                   <div className="min-w-0">
                     <p className="text-xs sm:text-sm font-bold text-slate-700 truncate">{notif.title}</p>
                     <p className="text-[10px] sm:text-xs text-slate-500 mt-1 leading-relaxed line-clamp-2">{notif.message}</p>
@@ -296,7 +287,7 @@ const Dashboard: React.FC = () => {
 };
 
 const QuickAction: React.FC<{ icon: React.ReactNode; label: string; onClick: () => void; color: string }> = ({ icon, label, onClick, color }) => (
-  <button 
+  <button
     onClick={onClick}
     className={`flex flex-col items-center justify-center p-4 sm:p-6 rounded-2xl transition-all hover:shadow-lg active:scale-95 ${color}`}
   >
@@ -316,7 +307,7 @@ const ComplianceItem: React.FC<{ icon: React.ReactNode; label: string; status: s
 );
 
 const StatCard: React.FC<{ title: string; value: string | number; icon: React.ReactNode; trend: string; color: string; onClick?: () => void }> = ({ title, value, icon, trend, color, onClick }) => (
-  <div 
+  <div
     onClick={onClick}
     className={`bg-white p-4 sm:p-6 rounded-2xl shadow-sm border-l-4 ${color} transition-all hover:shadow-md group ${onClick ? 'cursor-pointer' : ''}`}
   >
@@ -330,45 +321,39 @@ const StatCard: React.FC<{ title: string; value: string | number; icon: React.Re
 );
 
 const PerformanceCard: React.FC<{ label: string; value: string; status: 'good' | 'warning' | 'bad' }> = ({ label, value, status }) => (
-  <div className={`p-4 rounded-xl border ${
-    status === 'good' ? 'bg-green-50 border-green-100' :
-    status === 'warning' ? 'bg-yellow-50 border-yellow-100' :
-    'bg-red-50 border-red-100'
-  }`}>
+  <div className={`p-4 rounded-xl border ${status === 'good' ? 'bg-green-50 border-green-100' :
+      status === 'warning' ? 'bg-yellow-50 border-yellow-100' :
+        'bg-red-50 border-red-100'
+    }`}>
     <p className="text-[9px] sm:text-[10px] font-bold text-gray-500 uppercase tracking-wider mb-1">{label}</p>
-    <p className={`text-lg sm:text-xl font-extrabold ${
-      status === 'good' ? 'text-green-600' :
-      status === 'warning' ? 'text-yellow-600' :
-      'text-red-600'
-    }`}>{value}</p>
+    <p className={`text-lg sm:text-xl font-extrabold ${status === 'good' ? 'text-green-600' :
+        status === 'warning' ? 'text-yellow-600' :
+          'text-red-600'
+      }`}>{value}</p>
   </div>
 );
 
 const AlertItem: React.FC<{ icon: React.ReactNode; title: string; message: string; type: 'warning' | 'error' | 'info'; action?: () => void }> = ({ icon, title, message, type, action }) => (
-  <div 
+  <div
     onClick={action}
-    className={`flex gap-3 p-3 sm:p-4 rounded-xl border cursor-pointer transition-all hover:shadow-md ${
-      type === 'error' ? 'bg-red-50 border-red-100' :
-      type === 'warning' ? 'bg-yellow-50 border-yellow-100' :
-      'bg-blue-50 border-blue-100'
-    }`}
+    className={`flex gap-3 p-3 sm:p-4 rounded-xl border cursor-pointer transition-all hover:shadow-md ${type === 'error' ? 'bg-red-50 border-red-100' :
+        type === 'warning' ? 'bg-yellow-50 border-yellow-100' :
+          'bg-blue-50 border-blue-100'
+      }`}
   >
-    <div className={`mt-0.5 ${
-      type === 'error' ? 'text-red-500' :
-      type === 'warning' ? 'text-yellow-600' :
-      'text-blue-500'
-    }`}>{icon}</div>
-    <div>
-      <p className={`text-xs sm:text-sm font-bold ${
-        type === 'error' ? 'text-red-800' :
-        type === 'warning' ? 'text-yellow-800' :
-        'text-blue-800'
-      }`}>{title}</p>
-      <p className={`text-[10px] sm:text-xs ${
-        type === 'error' ? 'text-red-600' :
+    <div className={`mt-0.5 ${type === 'error' ? 'text-red-500' :
         type === 'warning' ? 'text-yellow-600' :
-        'text-blue-600'
-      }`}>{message}</p>
+          'text-blue-500'
+      }`}>{icon}</div>
+    <div>
+      <p className={`text-xs sm:text-sm font-bold ${type === 'error' ? 'text-red-800' :
+          type === 'warning' ? 'text-yellow-800' :
+            'text-blue-800'
+        }`}>{title}</p>
+      <p className={`text-[10px] sm:text-xs ${type === 'error' ? 'text-red-600' :
+          type === 'warning' ? 'text-yellow-600' :
+            'text-blue-600'
+        }`}>{message}</p>
     </div>
   </div>
 );
