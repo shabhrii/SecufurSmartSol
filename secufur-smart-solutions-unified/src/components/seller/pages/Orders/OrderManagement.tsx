@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import { useApp } from '@/context/seller/AppContext';
-import { 
+import {
   CheckCircle2, Truck, Download, ShieldCheck, Package, X, Star, ChevronRight, Info,
   Clock, AlertTriangle, Eye, MapPin, Phone, Mail
 } from 'lucide-react';
-import { OrderStatus, DeliveryPartner } from '../../types';
+import { OrderStatus, DeliveryPartner } from '@/types/seller';
 
 const OrderManagement: React.FC = () => {
   const { orders, acceptOrder, updateOrderStatus, shipOrder, seller } = useApp();
@@ -16,11 +16,11 @@ const OrderManagement: React.FC = () => {
   const filteredOrders = activeTab === 'All' ? orders : orders.filter(o => o.status === activeTab);
   const enabledPartners = seller?.deliveryPreferences?.filter(p => p.isEnabled) || [];
 
-  const handleShipOrder = (orderId: string, partner: DeliveryPartner) => {
+  const handleShipOrder = React.useCallback((orderId: string, partner: DeliveryPartner) => {
     const trackingId = partner.name.substring(0, 3).toUpperCase() + Math.floor(10000000 + Math.random() * 90000000);
     shipOrder(orderId, partner.name, trackingId);
     setIsCourierModal(null);
-  };
+  }, [shipOrder]);
 
   const getStatusColor = (status: OrderStatus) => {
     switch (status) {
@@ -48,10 +48,9 @@ const OrderManagement: React.FC = () => {
           {['All', 'Pending', 'Accepted', 'Shipped', 'Delivered'].map((tab) => (
             <button
               key={tab}
-              onClick={() => setActiveTab(tab as any)}
-              className={`px-3 sm:px-4 py-2 rounded-lg text-[9px] sm:text-[10px] font-extrabold transition-all uppercase whitespace-nowrap ${
-                activeTab === tab ? 'bg-[#002366] text-white shadow-lg' : 'text-slate-400 hover:text-slate-600'
-              }`}
+              onClick={() => setActiveTab(tab as OrderStatus | 'All')}
+              className={`px-3 sm:px-4 py-2 rounded-lg text-[9px] sm:text-[10px] font-extrabold transition-all uppercase whitespace-nowrap ${activeTab === tab ? 'bg-[#002366] text-white shadow-lg' : 'text-slate-400 hover:text-slate-600'
+                }`}
             >
               {tab}
             </button>
@@ -62,7 +61,7 @@ const OrderManagement: React.FC = () => {
       <div className="space-y-4">
         {filteredOrders.map((order) => {
           const isOverdue = order.status === 'Pending' && new Date(order.slaDeadlines.acceptBy) < new Date();
-          
+
           return (
             <div key={order.id} className={`bg-white rounded-2xl border shadow-sm overflow-hidden transition-all hover:border-blue-200 ${isOverdue ? 'border-red-200' : 'border-gray-100'}`}>
               {isOverdue && (
@@ -83,9 +82,8 @@ const OrderManagement: React.FC = () => {
                           {order.shipping.provider}
                         </span>
                       )}
-                      <span className={`text-[8px] px-2 py-0.5 rounded-full font-bold uppercase ${
-                        order.paymentMethod === 'Prepaid' ? 'bg-green-50 text-green-600' : 'bg-orange-50 text-orange-600'
-                      }`}>
+                      <span className={`text-[8px] px-2 py-0.5 rounded-full font-bold uppercase ${order.paymentMethod === 'Prepaid' ? 'bg-green-50 text-green-600' : 'bg-orange-50 text-orange-600'
+                        }`}>
                         {order.paymentMethod}
                       </span>
                     </div>
@@ -110,16 +108,16 @@ const OrderManagement: React.FC = () => {
                     <p className="text-[9px] sm:text-[10px] font-bold text-gray-400 uppercase">Total</p>
                     <p className="text-base sm:text-lg font-jakarta font-extrabold text-slate-800">₹{order.totalAmount.toLocaleString('en-IN')}</p>
                   </div>
-                  
+
                   <div className="flex gap-2">
-                    <button 
+                    <button
                       onClick={() => setIsOrderDetailModal(order.id)}
                       className="p-2 sm:p-3 bg-gray-50 text-slate-400 rounded-xl border border-gray-100 hover:text-[#002366] hover:border-[#002366] transition-all"
                     >
                       <Eye size={16} />
                     </button>
                     {order.status === 'Pending' && (
-                      <button 
+                      <button
                         onClick={() => acceptOrder(order.id)}
                         className="bg-green-500 text-white px-4 sm:px-5 py-2 sm:py-3 rounded-xl font-bold text-[10px] sm:text-xs flex items-center gap-2 hover:bg-green-600 shadow-lg active:scale-95"
                       >
@@ -127,14 +125,14 @@ const OrderManagement: React.FC = () => {
                       </button>
                     )}
                     {order.status === 'Accepted' && (
-                      <button 
+                      <button
                         onClick={() => setIsCourierModal(order.id)}
                         className="bg-[#002366] text-white px-4 sm:px-5 py-2 sm:py-3 rounded-xl font-bold text-[10px] sm:text-xs flex items-center gap-2 hover:bg-blue-900 shadow-lg shadow-blue-900/20 active:scale-95"
                       >
                         <Truck size={14} /> SHIP
                       </button>
                     )}
-                    <button 
+                    <button
                       onClick={() => setIsInvoiceModal(order.id)}
                       className="p-2 sm:p-3 bg-white border border-gray-200 text-slate-400 rounded-xl hover:text-[#002366] hover:border-[#002366] transition-all"
                     >
@@ -174,7 +172,7 @@ const OrderManagement: React.FC = () => {
             <div className="p-6 sm:p-8 space-y-4">
               {enabledPartners.length > 0 ? (
                 enabledPartners.map(partner => (
-                  <button 
+                  <button
                     key={partner.id}
                     onClick={() => handleShipOrder(isCourierModal, partner)}
                     className="w-full p-4 sm:p-5 border border-gray-100 rounded-2xl flex items-center justify-between hover:border-[#002366] hover:bg-blue-50/30 transition-all group"
@@ -218,7 +216,7 @@ const OrderManagement: React.FC = () => {
       {isOrderDetailModal && selectedOrder && (
         <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 sm:p-6 bg-slate-900/60 backdrop-blur-sm animate-in fade-in">
           <div className="w-full max-w-2xl bg-white rounded-3xl overflow-hidden shadow-2xl max-h-[90vh] overflow-y-auto">
-            <div className="p-6 sm:p-8 border-b border-gray-100 flex justify-between items-start bg-gray-50/50 sticky top-0">
+            <div className="p-6 sm:p-8 border-b border-gray-100 flex justify-between items-start bg-white sticky top-0 z-10">
               <div>
                 <h3 className="text-xl sm:text-2xl font-extrabold text-[#002366]">Order #{selectedOrder.id}</h3>
                 <p className="text-xs text-slate-400 font-bold mt-1">{selectedOrder.date}</p>
@@ -246,7 +244,7 @@ const OrderManagement: React.FC = () => {
                   <p className="text-xs text-slate-500 flex items-start gap-2">
                     <MapPin size={12} className="mt-0.5 shrink-0" />
                     <span>
-                      {selectedOrder.shippingAddress.line1}, {selectedOrder.shippingAddress.city}, 
+                      {selectedOrder.shippingAddress.line1}, {selectedOrder.shippingAddress.city},
                       {selectedOrder.shippingAddress.state} - {selectedOrder.shippingAddress.pincode}
                     </span>
                   </p>
@@ -312,8 +310,8 @@ const OrderManagement: React.FC = () => {
               </div>
             </div>
             <div className="p-6 sm:p-8 bg-gray-50 border-t border-gray-100">
-              <button 
-                onClick={() => setIsOrderDetailModal(null)} 
+              <button
+                onClick={() => setIsOrderDetailModal(null)}
                 className="w-full py-4 bg-[#002366] text-white rounded-2xl font-bold text-xs uppercase"
               >
                 Close
