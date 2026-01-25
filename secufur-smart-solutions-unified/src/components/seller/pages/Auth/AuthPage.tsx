@@ -121,6 +121,10 @@ const AuthPage: React.FC = () => {
           setError('Please upload Address Proof PDF');
           return;
         }
+        if (!formData.identityProofDoc) {
+          setError('Please upload Identity Proof PDF');
+          return;
+        }
       }
       if (step === 4) {
         if (!formData.bankDetails.accountNumber || !formData.bankDetails.ifsc) {
@@ -147,8 +151,8 @@ const AuthPage: React.FC = () => {
         status: 'Applied',
         complianceAgreed: false
       }, formData.password);
-      setSuccess('Registration successful! Redirecting to dashboard...');
-      setTimeout(() => router.push('/seller'), 1500);
+      setSuccess('Registration successful! Redirecting to verification status...');
+      setTimeout(() => router.push('/seller/under-review'), 1500);
     }, 1500);
   };
 

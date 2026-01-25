@@ -168,8 +168,11 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   });
 
   const [currentUser, setCurrentUser] = useState<SellerUser | null>(() => {
-    const saved = sessionStorage.getItem('luvarte_current_user');
-    return saved ? JSON.parse(saved) : null;
+    if (typeof window !== 'undefined') {
+      const saved = sessionStorage.getItem('luvarte_current_user');
+      return saved ? JSON.parse(saved) : null;
+    }
+    return null;
   });
 
   // Products with new categories
