@@ -34,10 +34,10 @@ export default function OrdersPage() {
             value === 'Delivered'
               ? 'success'
               : value === 'Processing'
-              ? 'info'
-              : value === 'Shipped'
-              ? 'info'
-              : 'warning'
+                ? 'info'
+                : value === 'Shipped'
+                  ? 'info'
+                  : 'warning'
           }
         >
           {value}
@@ -46,10 +46,10 @@ export default function OrdersPage() {
     },
     { key: 'createdAt', label: 'Created' },
     {
-      key: 'id',
+      key: 'actions',
       label: 'Actions',
-      render: (value: string) => (
-        <Link href={`/admin/orders/${value}`}>
+      render: (_: string, row: any) => (
+        <Link href={`/admin/orders/${row.id}`}>
           <AdminButton variant="ghost" size="sm">
             <Eye size={16} />
           </AdminButton>

@@ -1,5 +1,6 @@
 'use client';
 
+import { use } from 'react';
 import Link from 'next/link';
 import { AdminLayout } from '@/components/admin/layout/AdminLayout';
 import { AdminCard } from '@/components/admin/ui/AdminCard';
@@ -8,8 +9,9 @@ import { AdminButton } from '@/components/admin/ui/AdminButton';
 import { mockProducts } from '@/lib/admin/mockData';
 import { ChevronLeft, Tag, Truck, Weight, Ruler } from 'lucide-react';
 
-export default function ProductDetailPage({ params }: { params: { id: string } }) {
-  const product = mockProducts.find((p) => p.id === params.id) || mockProducts[0];
+export default function ProductDetailPage({ params }: { params: Promise<{ id: string }> }) {
+  const { id } = use(params);
+  const product = mockProducts.find((p) => p.id === id) || mockProducts[0];
 
   return (
     <AdminLayout title={`Product: ${product.name}`}>
