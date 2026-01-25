@@ -29,9 +29,9 @@ export default function UsersPage() {
     {
       key: 'actions',
       label: 'Actions',
-      render: (value: string) => (
+      render: (_: string, row: any) => (
         <div className="flex gap-2">
-          <Link href={`/admin/users/${value}`}>
+          <Link href={`/admin/users/${row.id}`}>
             <AdminButton variant="ghost" size="sm">
               <Eye size={16} />
             </AdminButton>
