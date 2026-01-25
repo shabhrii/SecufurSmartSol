@@ -35,11 +35,11 @@ export default function SellersPage() {
       )
     },
     {
-      key: 'id',
+      key: 'actions',
       label: 'Actions',
-      render: (value: string) => (
+      render: (_: string, row: any) => (
         <div className="flex gap-2">
-          <Link href={`/admin/sellers/${value}`}>
+          <Link href={`/admin/sellers/${row.id}`}>
             <AdminButton variant="ghost" size="sm">
               <Eye size={16} />
             </AdminButton>

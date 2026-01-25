@@ -1,5 +1,6 @@
 'use client';
 
+import { use } from 'react';
 import Link from 'next/link';
 import { AdminLayout } from '@/components/admin/layout/AdminLayout';
 import { AdminCard } from '@/components/admin/ui/AdminCard';
@@ -8,8 +9,9 @@ import { AdminButton } from '@/components/admin/ui/AdminButton';
 import { mockUsers } from '@/lib/admin/mockData';
 import { ChevronLeft, Mail, Phone, Calendar } from 'lucide-react';
 
-export default function UserDetailPage({ params }: { params: { id: string } }) {
-  const user = mockUsers.find((u) => u.id === params.id) || mockUsers[0];
+export default function UserDetailPage({ params }: { params: Promise<{ id: string }> }) {
+  const { id } = use(params);
+  const user = mockUsers.find((u) => u.id === id) || mockUsers[0];
 
   return (
     <AdminLayout title={`User: ${user.name}`}>

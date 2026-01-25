@@ -1,5 +1,6 @@
 'use client';
 
+import { use } from 'react';
 import Link from 'next/link';
 import { AdminLayout } from '@/components/admin/layout/AdminLayout';
 import { AdminCard } from '@/components/admin/ui/AdminCard';
@@ -9,8 +10,9 @@ import { AdminButton } from '@/components/admin/ui/AdminButton';
 import { mockSellers, mockProducts } from '@/lib/admin/mockData';
 import { ChevronLeft, Mail, Phone, MapPin, TrendingUp } from 'lucide-react';
 
-export default function SellerDetailPage({ params }: { params: { id: string } }) {
-  const seller = mockSellers.find((s) => s.id === params.id) || mockSellers[0];
+export default function SellerDetailPage({ params }: { params: Promise<{ id: string }> }) {
+  const { id } = use(params);
+  const seller = mockSellers.find((s) => s.id === id) || mockSellers[0];
   const sellerProducts = mockProducts.filter((p) => p.sellerId === seller.id);
 
   const productColumns = [
