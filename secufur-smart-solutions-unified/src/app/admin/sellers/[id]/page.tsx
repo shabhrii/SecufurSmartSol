@@ -8,7 +8,7 @@ import { AdminTable } from '@/components/admin/ui/AdminTable';
 import { AdminBadge } from '@/components/admin/ui/AdminBadge';
 import { AdminButton } from '@/components/admin/ui/AdminButton';
 import { mockSellers, mockProducts } from '@/lib/admin/mockData';
-import { ChevronLeft, Mail, Phone, MapPin, TrendingUp } from 'lucide-react';
+import { ChevronLeft, Mail, Phone, MapPin, TrendingUp, FileText } from 'lucide-react';
 
 export default function SellerDetailPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = use(params);
@@ -55,6 +55,75 @@ export default function SellerDetailPage({ params }: { params: Promise<{ id: str
                     <AdminBadge variant={seller.verificationStatus === 'Verified' ? 'success' : 'warning'}>
                       {seller.verificationStatus}
                     </AdminBadge>
+                  </div>
+                </div>
+              </div>
+            </AdminCard>
+
+            <AdminCard>
+              <h3 className="text-lg font-semibold text-gray-900 mb-6">Registration Details</h3>
+
+              <div className="space-y-6">
+                <div>
+                  <h4 className="text-sm font-medium text-gray-900 mb-3">Business Information</h4>
+                  <div className="grid grid-cols-2 gap-4">
+                    <div>
+                      <p className="text-sm text-gray-600">Business Type</p>
+                      <p className="text-gray-900 font-medium">{seller.businessType || 'N/A'}</p>
+                    </div>
+                    <div>
+                      <p className="text-sm text-gray-600">GST Number</p>
+                      <p className="text-gray-900 font-medium">{seller.gstNumber || 'N/A'}</p>
+                    </div>
+                    <div>
+                      <p className="text-sm text-gray-600">PAN Number</p>
+                      <p className="text-gray-900 font-medium">{seller.panNumber || 'N/A'}</p>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="border-t border-gray-100 pt-4">
+                  <h4 className="text-sm font-medium text-gray-900 mb-3 flex items-center gap-2">
+                    <TrendingUp size={16} /> Bank Details
+                  </h4>
+                  <div className="bg-gray-50 p-4 rounded-lg space-y-3">
+                    <div className="flex justify-between">
+                      <p className="text-sm text-gray-600">Bank Name</p>
+                      <p className="text-sm font-medium text-gray-900">{seller.bankDetails?.bankName || 'N/A'}</p>
+                    </div>
+                    <div className="flex justify-between">
+                      <p className="text-sm text-gray-600">Account Number</p>
+                      <p className="text-sm font-medium text-gray-900">{seller.bankDetails?.accountNumber || 'N/A'}</p>
+                    </div>
+                    <div className="flex justify-between">
+                      <p className="text-sm text-gray-600">IFSC Code</p>
+                      <p className="text-sm font-medium text-gray-900">{seller.bankDetails?.ifscCode || 'N/A'}</p>
+                    </div>
+                    <div className="flex justify-between">
+                      <p className="text-sm text-gray-600">Account Name</p>
+                      <p className="text-sm font-medium text-gray-900">{seller.bankDetails?.accountName || 'N/A'}</p>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="border-t border-gray-100 pt-4">
+                  <h4 className="text-sm font-medium text-gray-900 mb-3">Documents</h4>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    {Object.entries(seller.documents || {}).map(([key, value]) => (
+                      <div key={key} className="flex items-center justify-between p-3 border border-gray-200 rounded-lg">
+                        <div className="flex items-center gap-2">
+                          <div className="p-2 bg-blue-50 text-blue-600 rounded">
+                            <FileText size={16} />
+                          </div>
+                          <span className="text-sm font-medium text-gray-700 capitalize">
+                            {key.replace(/([A-Z])/g, ' $1').trim()}
+                          </span>
+                        </div>
+                        <AdminButton variant="ghost" size="sm" className="text-blue-600 hover:text-blue-700">
+                          View
+                        </AdminButton>
+                      </div>
+                    ))}
                   </div>
                 </div>
               </div>

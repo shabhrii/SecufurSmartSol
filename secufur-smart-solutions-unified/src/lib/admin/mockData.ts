@@ -67,7 +67,22 @@ export const mockSellers = [
     totalSales: 125600.00,
     joinedDate: '2023-06-15',
     phone: '+1 234 567 8900',
-    address: '123 Tech Street, Silicon Valley, CA 94025'
+    address: '123 Tech Street, Silicon Valley, CA 94025',
+    businessType: 'Private Limited',
+    gstNumber: '29ABCDE1234F1Z5',
+    panNumber: 'ABCDE1234F',
+    bankDetails: {
+      accountName: 'TechGear Solutions Pvt Ltd',
+      accountNumber: '912345678901',
+      ifscCode: 'HDFC0000123',
+      bankName: 'HDFC Bank'
+    },
+    documents: {
+      gstCertificate: 'gst_cert.pdf',
+      panCard: 'pan_card.jpg',
+      cancelledCheque: 'cheque.jpg',
+      addressProof: 'utility_bill.pdf'
+    }
   },
   {
     id: 'SEL002',
@@ -79,7 +94,22 @@ export const mockSellers = [
     totalSales: 234500.00,
     joinedDate: '2023-05-22',
     phone: '+1 234 567 8901',
-    address: '456 Fashion Ave, New York, NY 10001'
+    address: '456 Fashion Ave, New York, NY 10001',
+    businessType: 'Public Limited',
+    gstNumber: '07FGHIJ5678K1Z2',
+    panNumber: 'FGHIJ5678K',
+    bankDetails: {
+      accountName: 'Fashion Forward Inc',
+      accountNumber: '112233445566',
+      ifscCode: 'SBIN0004567',
+      bankName: 'State Bank of India'
+    },
+    documents: {
+      gstCertificate: 'gst_cert.pdf',
+      panCard: 'pan_card.jpg',
+      cancelledCheque: 'cheque.jpg',
+      addressProof: 'utility_bill.pdf'
+    }
   },
   {
     id: 'SEL003',
@@ -91,7 +121,22 @@ export const mockSellers = [
     totalSales: 45200.00,
     joinedDate: '2024-01-05',
     phone: '+1 234 567 8902',
-    address: '789 Home Blvd, Chicago, IL 60601'
+    address: '789 Home Blvd, Chicago, IL 60601',
+    businessType: 'Partnership',
+    gstNumber: '19KLMNO9012P1Z8',
+    panNumber: 'KLMNO9012P',
+    bankDetails: {
+      accountName: 'Home Essentials Co',
+      accountNumber: '987654321098',
+      ifscCode: 'ICIC0000789',
+      bankName: 'ICICI Bank'
+    },
+    documents: {
+      gstCertificate: 'gst_cert.pdf',
+      panCard: 'pan_card.jpg',
+      cancelledCheque: 'cheque.jpg',
+      addressProof: 'utility_bill.pdf'
+    }
   },
   {
     id: 'SEL004',
@@ -103,7 +148,22 @@ export const mockSellers = [
     totalSales: 89400.00,
     joinedDate: '2023-08-10',
     phone: '+1 234 567 8903',
-    address: '321 Sports Way, Miami, FL 33101'
+    address: '321 Sports Way, Miami, FL 33101',
+    businessType: 'Proprietorship',
+    gstNumber: '33PQRST3456U1Z4',
+    panNumber: 'PQRST3456U',
+    bankDetails: {
+      accountName: 'Sports Pro Store',
+      accountNumber: '556677889900',
+      ifscCode: 'AXIS0000234',
+      bankName: 'Axis Bank'
+    },
+    documents: {
+      gstCertificate: 'gst_cert.pdf',
+      panCard: 'pan_card.jpg',
+      cancelledCheque: 'cheque.jpg',
+      addressProof: 'utility_bill.pdf'
+    }
   },
   {
     id: 'SEL005',
@@ -115,7 +175,22 @@ export const mockSellers = [
     totalSales: 156700.00,
     joinedDate: '2023-04-18',
     phone: '+1 234 567 8904',
-    address: '654 Library Lane, Boston, MA 02101'
+    address: '654 Library Lane, Boston, MA 02101',
+    businessType: 'Private Limited',
+    gstNumber: '27VWXYZ7890A1Z1',
+    panNumber: 'VWXYZ7890A',
+    bankDetails: {
+      accountName: 'Books & Beyond Pvt Ltd',
+      accountNumber: '334455667788',
+      ifscCode: 'HDFC0000567',
+      bankName: 'HDFC Bank'
+    },
+    documents: {
+      gstCertificate: 'gst_cert.pdf',
+      panCard: 'pan_card.jpg',
+      cancelledCheque: 'cheque.jpg',
+      addressProof: 'utility_bill.pdf'
+    }
   }
 ];
 
