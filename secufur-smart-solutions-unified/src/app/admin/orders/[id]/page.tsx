@@ -1,5 +1,6 @@
 'use client';
 
+import { use } from 'react';
 import Link from 'next/link';
 import { AdminLayout } from '@/components/admin/layout/AdminLayout';
 import { AdminCard } from '@/components/admin/ui/AdminCard';
@@ -8,8 +9,9 @@ import { AdminButton } from '@/components/admin/ui/AdminButton';
 import { mockOrders } from '@/lib/admin/mockData';
 import { ChevronLeft, Check, Clock, Truck, Package } from 'lucide-react';
 
-export default function OrderDetailPage({ params }: { params: { id: string } }) {
-  const order = mockOrders.find((o) => o.id === params.id) || mockOrders[0];
+export default function OrderDetailPage({ params }: { params: Promise<{ id: string }> }) {
+  const { id } = use(params);
+  const order = mockOrders.find((o) => o.id === id) || mockOrders[0];
 
   const timelineSteps = [
     { status: 'Order Placed', icon: Package, completed: true },
@@ -44,8 +46,8 @@ export default function OrderDetailPage({ params }: { params: { id: string } }) 
                         order.orderStatus === 'Delivered'
                           ? 'success'
                           : order.orderStatus === 'Processing'
-                          ? 'info'
-                          : 'warning'
+                            ? 'info'
+                            : 'warning'
                       }
                     >
                       {order.orderStatus}
@@ -68,19 +70,17 @@ export default function OrderDetailPage({ params }: { params: { id: string } }) 
                     <div key={idx} className="flex gap-4">
                       <div className="flex flex-col items-center">
                         <div
-                          className={`w-10 h-10 rounded-full flex items-center justify-center ${
-                            step.completed
+                          className={`w-10 h-10 rounded-full flex items-center justify-center ${step.completed
                               ? 'bg-green-100 text-green-600'
                               : 'bg-gray-100 text-gray-400'
-                          }`}
+                            }`}
                         >
                           <Icon size={20} />
                         </div>
                         {idx < timelineSteps.length - 1 && (
                           <div
-                            className={`w-0.5 h-12 my-2 ${
-                              step.completed ? 'bg-green-200' : 'bg-gray-200'
-                            }`}
+                            className={`w-0.5 h-12 my-2 ${step.completed ? 'bg-green-200' : 'bg-gray-200'
+                              }`}
                           />
                         )}
                       </div>

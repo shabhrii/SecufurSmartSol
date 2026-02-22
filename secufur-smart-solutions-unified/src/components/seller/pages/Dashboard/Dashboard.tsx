@@ -57,35 +57,7 @@ const Dashboard: React.FC = () => {
         </div>
       </div>
 
-      {seller?.status && seller.status !== 'Live' && (
-        <div className={`p-4 rounded-2xl border flex items-start gap-3 ${seller.status === 'Applied' ? 'bg-yellow-50 border-yellow-100' :
-          seller.status === 'UnderReview' ? 'bg-blue-50 border-blue-100' :
-            seller.status === 'Suspended' ? 'bg-red-50 border-red-100' :
-              'bg-gray-50 border-gray-100'
-          }`}>
-          <AlertTriangle size={18} className={
-            seller.status === 'Applied' ? 'text-yellow-500' :
-              seller.status === 'UnderReview' ? 'text-blue-500' :
-                seller.status === 'Suspended' ? 'text-red-500' : 'text-gray-500'
-          } />
-          <div>
-            <p className="text-sm font-bold text-slate-800">Account Status: {seller.status}</p>
-            <p className="text-xs text-slate-500 mt-1">
-              {seller.status === 'Applied' && 'Your application is submitted. Complete verification to start selling.'}
-              {seller.status === 'UnderReview' && 'Your documents are under review. This usually takes 2-3 business days.'}
-              {seller.status === 'Suspended' && 'Your account is suspended. Contact support for assistance.'}
-            </p>
-            {seller.status === 'Applied' && (
-              <button
-                onClick={() => router.push('/seller/compliance')}
-                className="mt-3 text-[10px] font-bold text-[#002366] uppercase tracking-wider hover:underline"
-              >
-                Complete Verification →
-              </button>
-            )}
-          </div>
-        </div>
-      )}
+
 
 
 
@@ -255,26 +227,7 @@ const Dashboard: React.FC = () => {
             </div>
           </div>
 
-          <div className="bg-white p-6 sm:p-8 rounded-2xl shadow-sm border border-gray-100">
-            <h3 className="font-jakarta font-bold text-lg mb-4 sm:mb-6">Notifications</h3>
-            <div className="space-y-4 sm:space-y-6">
-              {notifications.slice(0, 4).map((notif) => (
-                <div key={notif.id} className="flex gap-3 sm:gap-4 group">
-                  <div className={`mt-1.5 w-1.5 h-1.5 rounded-full shrink-0 transition-transform group-hover:scale-150 ${notif.type === 'Urgent' ? 'bg-red-500' :
-                    notif.type === 'Order' ? 'bg-orange-500' :
-                      notif.type === 'Payment' ? 'bg-green-500' : 'bg-blue-500'
-                    }`} />
-                  <div className="min-w-0">
-                    <p className="text-xs sm:text-sm font-bold text-slate-700 truncate">{notif.title}</p>
-                    <p className="text-[10px] sm:text-xs text-slate-500 mt-1 leading-relaxed line-clamp-2">{notif.message}</p>
-                  </div>
-                </div>
-              ))}
-              {notifications.length === 0 && (
-                <p className="text-slate-400 text-xs italic">No notifications</p>
-              )}
-            </div>
-          </div>
+
         </div>
       </div>
     </div>

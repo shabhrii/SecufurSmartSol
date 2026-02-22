@@ -1,0 +1,195 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum UserRole {
+  BUYER
+  SELLER
+  ADMIN
+}
+
+enum SellerStatus {
+  APPLIED
+  UNDER_REVIEW
+  APPROVED
+  REJECTED
+  SUSPENDED
+}
+
+enum OrderStatus {
+  PENDING
+  CONFIRMED
+  SHIPPED
+  OUT_FOR_DELIVERY
+  DELIVERED
+  CANCELLED
+  RETURNED
+}
+
+enum PaymentStatus {
+  PENDING
+  SUCCESS
+  FAILED
+  REFUNDED
+}
+
+model User {
+  id            String    @id @default(cuid())
+  name          String?
+  email         String    @unique
+  password      String?
+  image         String?
+  role          UserRole  @default(BUYER)
+  phone         String?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  // Relations
+  sellerProfile SellerProfile?
+  orders        Order[]
+  addresses     Address[]
+  reviews       Review[]
+}
+
+model SellerProfile {
+  id              String       @id @default(cuid())
+  userId          String       @unique
+  user            User         @relation(fields: [userId], references: [id])
+  businessName    String
+  gstNumber       String?
+  panNumber       String?
+  status          SellerStatus @default(APPLIED)
+  
+  // Bank Details
+  bankAccount     String?
+  ifscCode        String?
+  bankName        String?
+
+  // Compliance
+  isVerified      Boolean      @default(false)
+  documents       String[]     // URLs to S3
+  
+  commissionRate  Float        @default(0.0)
+  
+  products        Product[]
+  createdAt       DateTime     @default(now())
+  updatedAt       DateTime     @updatedAt
+}
+
+model Product {
+  id          String   @id @default(cuid())
+  sellerId    String
+  seller      SellerProfile @relation(fields: [sellerId], references: [id])
+  
+  name        String
+  description String
+  price       Float
+  stock       Int      @default(0)
+  
+  category    String
+  subcategory String?
+  brand       String?
+  
+  images      String[]
+  
+  // Specifications (stored as JSON)
+  specifications Json? 
+  
+  isActive    Boolean  @default(true)
+  
+  orderItems  OrderItem[]
+  reviews     Review[]
+  
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Order {
+  id              String      @id @default(cuid())
+  userId          String
+  user            User        @relation(fields: [userId], references: [id])
+  
+  totalAmount     Float
+  currency        String      @default("INR")
+  status          OrderStatus @default(PENDING)
+  
+  // Shipping
+  shippingAddressId String
+  shippingAddress   Address   @relation(fields: [shippingAddressId], references: [id])
+  trackingNumber    String?
+  deliveryPartner   String?   // e.g., "Shiprocket", "Bluedart"
+  
+  // Payment
+  payment         Payment?
+  
+  items           OrderItem[]
+  
+  createdAt       DateTime    @default(now())
+  updatedAt       DateTime    @updatedAt
+}
+
+model OrderItem {
+  id        String  @id @default(cuid())
+  orderId   String
+  order     Order   @relation(fields: [orderId], references: [id])
+  
+  productId String
+  product   Product @relation(fields: [productId], references: [id])
+  
+  quantity  Int
+  price     Float   // Snapshot of price at time of order
+}
+
+model Payment {
+  id                String        @id @default(cuid())
+  orderId           String        @unique
+  order             Order         @relation(fields: [orderId], references: [id])
+  
+  razorpayOrderId   String?
+  razorpayPaymentId String?
+  razorpaySignature String?
+  
+  amount            Float
+  status            PaymentStatus @default(PENDING)
+  
+  createdAt         DateTime      @default(now())
+  updatedAt         DateTime      @updatedAt
+}
+
+model Address {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+  
+  name      String
+  line1     String
+  line2     String?
+  city      String
+  state     String
+  pincode   String
+  phone     String
+  
+  isDefault Boolean  @default(false)
+  
+  orders    Order[]
+}
+
+model Review {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+  
+  productId String
+  product   Product  @relation(fields: [productId], references: [id])
+  
+  rating    Int
+  comment   String?
+  
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
