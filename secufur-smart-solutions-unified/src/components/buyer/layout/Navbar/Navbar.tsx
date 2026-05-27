@@ -73,9 +73,9 @@ export const Navbar: React.FC<NavbarProps> = ({ position = 'sticky' }) => {
 
           {/* Account Button (Desktop) */}
           <Link
-            href={isAuthenticated ? '/buyer/profile' : '/buyer/sign-in'}
+            href={mounted && isAuthenticated ? '/buyer/profile' : '/buyer/sign-in'}
             className={`${styles.actionButton} ${styles.hideOnMobile}`}
-            aria-label={isAuthenticated ? 'Account' : 'Sign In'}
+            aria-label={mounted && isAuthenticated ? 'Account' : 'Sign In'}
           >
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
               <path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2" />
@@ -120,7 +120,7 @@ export const Navbar: React.FC<NavbarProps> = ({ position = 'sticky' }) => {
       </div>
 
       {/* Mobile Menu */}
-      <MobileMenu isOpen={isMobileMenuOpen} pathname={pathname} isAuthenticated={isAuthenticated} />
+      <MobileMenu isOpen={isMobileMenuOpen} pathname={pathname} isAuthenticated={mounted && isAuthenticated} />
     </header>
   );
 };

@@ -232,7 +232,7 @@ export default function CookiePolicyPage() {
               If you have questions about our use of cookies, please contact us:
             </p>
             <div className={styles.contactInfo}>
-              <p>Email: privacy@luvarte.com</p>
+              <p>Email: privacy@secufur.in</p>
               <p>Phone: +91 1800 123 4567</p>
             </div>
           </section>

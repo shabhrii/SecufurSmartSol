@@ -27,7 +27,7 @@ export default function BatterySafetyPage() {
             <h2>General Battery Safety</h2>
             <ul>
               <li>Always read and follow the product manual before use</li>
-              <li>Use only chargers and accessories recommended by LUVARTE</li>
+              <li>Use only chargers and accessories recommended by Secufur Smart Solutions</li>
               <li>Keep batteries away from children and pets</li>
               <li>Do not expose batteries to extreme temperatures</li>
               <li>Do not puncture, crush, or disassemble batteries</li>
@@ -189,7 +189,7 @@ export default function BatterySafetyPage() {
             <ul>
               <li>Never dispose of batteries in regular household waste</li>
               <li>Contact your local recycling center for battery disposal options</li>
-              <li>LUVARTE offers a battery take-back program - contact us for details</li>
+              <li>Secufur Smart Solutions offers a battery take-back program - contact us for details</li>
               <li>Ensure batteries are fully discharged before disposal</li>
               <li>Tape over terminals to prevent short circuits during transport</li>
             </ul>
@@ -198,7 +198,7 @@ export default function BatterySafetyPage() {
           <section className={styles.section}>
             <h2>Product-Specific Safety</h2>
             <p>
-              Each LUVARTE product comes with detailed safety instructions specific to that model.
+              Each Secufur Smart Solutions product comes with detailed safety instructions specific to that model.
               Always refer to the product manual for complete safety information. Product manuals
               can also be downloaded from your order history page.
             </p>
@@ -206,7 +206,7 @@ export default function BatterySafetyPage() {
 
           <section className={styles.section}>
             <h2>Safety Certifications</h2>
-            <p>All LUVARTE batteries are certified to meet or exceed:</p>
+            <p>All Secufur Smart Solutions batteries are certified to meet or exceed:</p>
             <ul>
               <li>BIS (Bureau of Indian Standards) certification</li>
               <li>UN 38.3 transportation testing</li>
@@ -224,7 +224,7 @@ export default function BatterySafetyPage() {
             </p>
             <div className={styles.contactInfo}>
               <p>Safety Hotline: +91 1800 123 4567 (Press 1 for emergencies)</p>
-              <p>Email: safety@luvarte.com</p>
+              <p>Email: safety@secufur.in</p>
               <p>Available 24/7 for safety emergencies</p>
             </div>
           </section>
